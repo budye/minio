@@ -30,6 +30,7 @@ import (
 	dns2 "github.com/miekg/dns"
 	"github.com/minio/cli"
 	"github.com/minio/minio-go/pkg/set"
+	"github.com/minio/minio/cmd/crypto"
 	"github.com/minio/minio/cmd/logger"
 	"github.com/minio/minio/cmd/logger/target/console"
 	"github.com/minio/minio/cmd/logger/target/http"
@@ -343,5 +344,8 @@ func handleCommonEnvVars() {
 			}
 			globalCompressMimeTypes = contenttypes
 		}
+	}
+	if err := Environment.LookupKMSConfig(crypto.KMSConfig{}); err != nil {
+		logger.FatalIf(err, "Unable to setup the KMS")
 	}
 }
